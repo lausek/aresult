@@ -38,7 +38,6 @@ ENDIF.
 result_let_ok go_fine lv_my_num.
     WRITE: |my number still is: { lv_my_num }|, /.
 ELSE.
-    DATA(lo_error_message) = go_fine=>unwrap_err( ).
     WRITE: |we got an error: { go_fine=>unwrap_err( ) }|, /.
 ENDIF.
 
