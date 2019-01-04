@@ -9,7 +9,7 @@ macros for functional error handling in ABAP (experimental)
 
 ## Usage
 
-1. clone repository using [abapGit](https://github.com/larshp/abapGit) ([see here](https://docs.abapgit.org/guide-online-install.html))
+1. clone repository using [abapGit](https://github.com/larshp/abapGit) (see [here](https://docs.abapgit.org/guide-online-install.html))
 2. include with `INCLUDE zaresult.`
 
 ## Example
