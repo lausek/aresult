@@ -1,14 +1,18 @@
-*&---------------------------------------------------------------------*
-*&  Include  ZARESULT
-*&---------------------------------------------------------------------*
+"---------------------------------------------------------------------*
+" Include ZARESULT ~ lausek, 2018
+" defines macros for error handling in a functional flavour
+"---------------------------------------------------------------------*
 
 " &1 = result typename
-" &2 = type 1
-" &3 = type 2
-DEFINE result.
+" &2 = `ok` value type
+" &3 = `err` value type
+DEFINE declare_result.
   CLASS &1 DEFINITION
       CREATE PRIVATE.
       PUBLIC SECTION.
+          TYPES:
+            ok_type   TYPE &2,
+            err_type  TYPE &3.
           CLASS-METHODS:
               ok
                   IMPORTING
@@ -42,22 +46,18 @@ DEFINE result.
           ro_ref->_tag = tag_ok.
           ro_ref->_ok = iv_val.
       ENDMETHOD.
-
       METHOD err.
           ro_ref = NEW &1(  ).
           ro_ref->_tag = tag_err.
           ro_ref->_err = iv_val.
       ENDMETHOD.
-
       METHOD is_ok.
           rv_correct = boolc( me->_tag = tag_ok ).
       ENDMETHOD.
-
       METHOD unwrap.
           ASSERT me->_tag = tag_ok.
           rs_ok = me->_ok.
       ENDMETHOD.
-
       METHOD unwrap_err.
           ASSERT me->_tag = tag_err.
           rs_err = me->_err.
@@ -66,8 +66,8 @@ DEFINE result.
 END-OF-DEFINITION.
 
 " &1 = name of result value
-" &2 = name of variable to be declared value
-DEFINE result_let_ok.
+" &2 = name of variable to be declared
+DEFINE if_ok_let.
   IF &1->is_ok( ).
       DATA(&2) = &1->unwrap( ).
 END-OF-DEFINITION.

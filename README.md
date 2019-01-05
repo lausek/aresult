@@ -24,7 +24,7 @@ INCLUDE zaresult.
 
 " i         = type of `ok`  variant
 " string    = type of `err` variant
-result ty_magic_operation i string.
+declare_result ty_magic_operation i string.
 
 DATA(go_fine)       = ty_magic_operation=>ok( 1337 ).
 DATA(go_not_good)   = ty_magic_operation=>err( `something is wrong` ).
@@ -33,14 +33,14 @@ DATA(go_not_good)   = ty_magic_operation=>err( `something is wrong` ).
 
 " checks if the variant is `ok` and assigns the value to lv_my_num
 " skips block otherwise
-result_let_ok go_fine lv_my_num.
+if_ok_let go_fine lv_my_num.
     WRITE: |my number is: { lv_my_num }|, /.
 ENDIF.
 
 " ...
 
 " same as before but ELSE case is supplied to handle error
-result_let_ok go_fine lv_my_num.
+if_ok_let go_fine lv_my_num.
     WRITE: |my number still is: { lv_my_num }|, /.
 ELSE.
     WRITE: |we got an error: { go_fine->unwrap_err( ) }|, /.
