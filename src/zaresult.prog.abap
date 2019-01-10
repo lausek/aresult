@@ -121,16 +121,29 @@ DEFINE type_result.
   ENDCLASS.
 END-OF-DEFINITION.
 
-" &1 = name of result value
+" assigns `ok` value of &1 to symbol &2
+" &1 = name of result variable
 " &2 = name of variable to be declared
 DEFINE if_ok_let.
   IF &1->is_ok( ).
       DATA(&2) = &1->unwrap( ).
 END-OF-DEFINITION.
 
-" &1 = name of result value
+" assigns `err` value of &1 to symbol &2
+" &1 = name of result variable
 " &2 = name of variable to be declared
 DEFINE if_err_let.
   IF NOT &1->is_ok( ).
       DATA(&2) = &1->unwrap_err( ).
+END-OF-DEFINITION.
+
+" takes `err` of &1 if it exists, creates an error 
+" of type &2 using that value, and returns
+" &1 = name of result variable
+" &2 = name of next result
+DEFINE try_raise.
+  IF NOT &1->is_ok( ).
+    &2 = &2=>err( &1->unwrap_err( ) ).
+    RETURN.
+  ENDIF.
 END-OF-DEFINITION.
