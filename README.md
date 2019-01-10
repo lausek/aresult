@@ -24,7 +24,7 @@ INCLUDE zaresult.
 
 " i         = type of `ok`  variant
 " string    = type of `err` variant
-declare_result ty_magic_operation i string.
+type_result ty_magic_operation i string.
 
 DATA(go_fine)       = ty_magic_operation=>ok( 1337 ).
 DATA(go_not_good)   = ty_magic_operation=>err( `something is wrong` ).

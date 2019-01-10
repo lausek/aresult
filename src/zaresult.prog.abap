@@ -3,10 +3,66 @@
 " defines macros for error handling in a functional flavour
 "---------------------------------------------------------------------*
 
+" &1 = maybe typename
+" &2 = `some` value type
+DEFINE type_maybe.
+  CLASS &1 DEFINITION
+      CREATE PRIVATE.
+      PUBLIC SECTION.
+          TYPES:
+            some_type TYPE &2,
+          CLASS-METHODS:
+              some
+                  IMPORTING
+                      iv_val TYPE &2
+                  PREFERRED PARAMETER iv_val
+                  RETURNING VALUE(ro_ref) TYPE REF TO &1,
+              none
+                  RETURNING VALUE(ro_ref) TYPE REF TO &1.
+          METHODS:
+              is_some
+                  RETURNING VALUE(rv_correct) TYPE abap_bool,
+              unwrap
+                  RETURNING VALUE(rs_some) TYPE &2,
+      PRIVATE SECTION.
+          CONSTANTS:
+              tag_some TYPE i VALUE 1,
+              tag_none TYPE i VALUE 2.
+          DATA:
+              _tag  TYPE i,
+              _some TYPE &2.
+  ENDCLASS.
+  CLASS &1 IMPLEMENTATION.
+      METHOD some.
+          ro_ref = NEW &1(  ).
+          ro_ref->_tag = tag_some.
+          ro_ref->_some = iv_val.
+      ENDMETHOD.
+      METHOD none.
+          ro_ref = NEW &1(  ).
+          ro_ref->_tag = tag_none.
+      ENDMETHOD.
+      METHOD is_some.
+          rv_correct = boolc( me->_tag = tag_some ).
+      ENDMETHOD.
+      METHOD unwrap.
+          ASSERT me->_tag = tag_some.
+          rs_some = me->_some.
+      ENDMETHOD.
+  ENDCLASS.
+END-OF-DEFINITION.
+
+" &1 = name of maybe value
+" &2 = name of variable to be declared
+DEFINE if_some_let.
+  IF &1->is_some( ).
+      DATA(&2) = &1->unwrap( ).
+END-OF-DEFINITION.
+
 " &1 = result typename
 " &2 = `ok` value type
 " &3 = `err` value type
-DEFINE declare_result.
+DEFINE type_result.
   CLASS &1 DEFINITION
       CREATE PRIVATE.
       PUBLIC SECTION.
