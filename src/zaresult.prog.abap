@@ -127,3 +127,10 @@ DEFINE if_ok_let.
   IF &1->is_ok( ).
       DATA(&2) = &1->unwrap( ).
 END-OF-DEFINITION.
+
+" &1 = name of result value
+" &2 = name of variable to be declared
+DEFINE if_err_let.
+  IF NOT &1->is_ok( ).
+      DATA(&2) = &1->unwrap_err( ).
+END-OF-DEFINITION.
