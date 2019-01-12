@@ -10,7 +10,7 @@ DEFINE type_maybe.
       CREATE PRIVATE.
       PUBLIC SECTION.
           TYPES:
-            some_type TYPE &2,
+            some_type TYPE &2.
           CLASS-METHODS:
               some
                   IMPORTING
@@ -23,7 +23,7 @@ DEFINE type_maybe.
               is_some
                   RETURNING VALUE(rv_correct) TYPE abap_bool,
               unwrap
-                  RETURNING VALUE(rs_some) TYPE &2,
+                  RETURNING VALUE(rv_val) TYPE &2.
       PRIVATE SECTION.
           CONSTANTS:
               tag_some TYPE i VALUE 1,
@@ -47,7 +47,7 @@ DEFINE type_maybe.
       ENDMETHOD.
       METHOD unwrap.
           ASSERT me->_tag = tag_some.
-          rs_some = me->_some.
+          rv_val = me->_some.
       ENDMETHOD.
   ENDCLASS.
 END-OF-DEFINITION.
@@ -137,7 +137,7 @@ DEFINE if_err_let.
       DATA(&2) = &1->unwrap_err( ).
 END-OF-DEFINITION.
 
-" takes `err` of &1 if it exists, creates an error 
+" takes `err` of &1 if it exists, creates an error
 " of type &2 using that value, and returns
 " &1 = name of result variable
 " &2 = name of next result
